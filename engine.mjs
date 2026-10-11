@@ -34,6 +34,7 @@ function validate(c){if(c.threshold<0||c.threshold>100||c.condonationMin<0||c.co
 export function setup(s,config){if(s.cycle)throw Error('Already configured. Use a versioned policy change.');if(!config.name?.trim()||!config.semester?.trim())throw Error('Institution and semester are required.');if(config.close<config.start||config.examStart<=config.start)throw Error('Dates must be ordered.');const n=structuredClone(s);n.cycle={...defaults,...config};validate(n.cycle);n.cycle.name=n.cycle.name.trim();revise(n,'Initial setup');audit(n,'Semester configured','Exam cell','Create cycle from empty setup',n.cycle);return n;}
 export function advance(s,date){const n=structuredClone(s);n.today=date;return n;}
 function caseFacts(s){for(const st of students){if(!st.paid||st.paid>nowStamp(s)||s.caseLoaded.includes(st.id))continue;
+ const existing=s.apps[st.id];if(existing?.papers?.length||existing?.status==='submitted'||s.payments.some(p=>p.student===st.id)){s.caseSkipped=s.caseSkipped||[];if(!s.caseSkipped.includes(st.id)){s.caseSkipped.push(st.id);audit(s,'Skipped case import '+st.id,'Finance','Manual application/payment preserved; supplied history was not merged automatically',{student:st.id});}continue;}
  const papers=[...st.courses,...(st.paidBacklogs||[])];s.apps[st.id]={papers,status:'submitted',submittedAt:st.paid};
  const pending=st.confirmation&&st.confirmation>nowStamp(s);const rate=st.paid>='2026-11-13'?400:300;const late=st.paid>='2026-11-14'?s.cycle.lateFee:0;
  const amount=s.cycle.base+(st.paidBacklogs||[]).length*rate+late;
