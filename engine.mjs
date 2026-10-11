@@ -12,7 +12,7 @@ export function evaluate(s,id){const st=students.find(x=>x.id===id),c=s.cycle;if
  const route=att!==null&&att>=c.condonationMin&&att<c.threshold&&c.condonation&&c.condonationPrograms.includes(st.program),condoned=route&&s.condoned.includes(id),academic=!debar&&att!==null&&(!short||condoned);
  const valid=[...st.courses,...st.backlogs,...(c.improvement?st.improvements||[]:[])],papers=[...new Set(a.papers)].filter(p=>valid.includes(p));
  const settled=s.payments.filter(p=>p.student===id&&p.status==='settled'),pending=s.payments.filter(p=>p.student===id&&p.status==='pending'),paid=settled.reduce((v,p)=>v+p.amount,0);
- const first=settled.find(p=>p.kind==='registration'),quoteTime=first?.initiatedAt||a.submittedAt||nowStamp(s);
+ const first=settled.find(p=>p.kind==='registration'),quoteTime=first?.initiatedAt||nowStamp(s);
  const rate=first?.rate??c.paperFee;
  const extras=papers.filter(p=>!st.courses.includes(p)).length;
  const late=s.applied.includes('extend')&&quoteTime>='2026-11-14T00:00'?c.lateFee:0;
