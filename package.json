@@ -1,0 +1,22 @@
+{
+  "name": "digii-build",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.mjs",
+    "build": "esbuild app.jsx --bundle --minify --outfile=dist/app.js && cp index.html dist/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "esbuild": "^0.28.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "puppeteer-core": "^25.13.0"
+  }
+}
